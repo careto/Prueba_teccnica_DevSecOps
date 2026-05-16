@@ -25,7 +25,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ping/src
+        working-directory: ping
 
     steps:
 
