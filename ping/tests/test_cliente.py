@@ -1,4 +1,4 @@
-from ping.cliente import enviar_healthcheck
+from cliente import enviar_healthcheck
 import requests
 
 def test_enviar_healthcheck(monkeypatch):
