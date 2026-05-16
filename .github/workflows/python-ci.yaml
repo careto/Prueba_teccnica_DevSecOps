@@ -25,7 +25,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ping
+        working-directory: ping/src
 
     steps:
 
@@ -40,6 +40,7 @@ jobs:
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
+             pip install pytest
 
       - name: Install dependencies
         run: |
