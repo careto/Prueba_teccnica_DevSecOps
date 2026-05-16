@@ -47,8 +47,8 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      - name: Validar la sintaxis de cliente.py pilas no revisa logica
-        run: python -m py_compile cliente.py
+      - name: Validar la sintaxis de main.py pilas no revisa logica
+        run: python -m py_compile main.py
 
-      - name: Run prueba tecnica
-        run: pytest cliente.py
+      - name: Run  prueba funcional
+        run: pytest
