@@ -60,7 +60,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./src/frontend"))
 	http.Handle("/", fs)
 
-	fmt.Println("Servidor arriba en http://localhost:8080")
+	fmt.Println("Servidor arriba en http://localhost")
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
