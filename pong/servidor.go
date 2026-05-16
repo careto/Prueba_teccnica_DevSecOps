@@ -62,7 +62,7 @@ func main() {
 
 	fmt.Println("Servidor arriba en http://localhost")
 
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":80", nil)
 	if err != nil {
 		panic(err)
 	}
