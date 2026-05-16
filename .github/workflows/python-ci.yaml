@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Validar la sintaxis de cliente.py pilas no revisa logica
-        run: python -m py_compile main.py
+        run: python -m compileall src
 
       - name: Run  prueba funcional
-        run: pytest test_cliente.py
+        run: PYTHONPATH=src pytest -v
