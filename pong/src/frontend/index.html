@@ -79,7 +79,7 @@
                     "Último refresh: " + new Date().toLocaleTimeString()
 
                 const response =
-                    await fetch("http://localhost:8080/logs")
+                    await fetch("http://localhost/logs")
 
                 const logs =
                     await response.json()

@@ -2,7 +2,7 @@ import requests
 import time
 from datetime import datetime
 
-URL = "http://localhost:8080/health"
+URL = "http://localhost/health"
 
 RETRY_DELAY = 2
 
