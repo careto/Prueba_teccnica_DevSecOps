@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Validate Python syntax
-        run: python -m py_compile client.py
+        run: python -m py_compile cliente.py
 
       - name: Run tests Prueba tecnica
         run: pytest
