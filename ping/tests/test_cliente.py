@@ -1,4 +1,4 @@
-from cliente import enviar_healthcheck
+from app.client import enviar_healthcheck
 import requests
 
 def test_enviar_healthcheck(monkeypatch):
