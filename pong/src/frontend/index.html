@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Healthcheck Monitor</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #refreshTime {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #333;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Healthcheck Monitor</h1>
+
+    <div id="refreshTime">
+        Esperando refresh...
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Método</th>
+                <th>Path</th>
+                <th>Response</th>
+            </tr>
+        </thead>
+
+        <tbody id="logsTable">
+
+        </tbody>
+
+    </table>
+
+    <script>
+
+        async function loadLogs() {
+
+            try {
+
+                document.getElementById("refreshTime").innerText =
+                    "Último refresh: " + new Date().toLocaleTimeString()
+
+                const response =
+                    await fetch("http://localhost:8080/logs")
+
+                const logs =
+                    await response.json()
+
+                const table =
+                    document.getElementById("logsTable")
+
+                table.innerHTML = ""
+
+                // tomar últimos 5 logs
+                const lastFiveLogs =
+                    logs.slice(-5).reverse()
+
+                lastFiveLogs.forEach(log => {
+
+                    table.innerHTML += `
+                        <tr>
+                            <td>${log.time}</td>
+                            <td>${log.method}</td>
+                            <td>${log.path}</td>
+                            <td>${log.response}</td>
+                        </tr>
+                    `
+                })
+
+            } catch (error) {
+
+                console.error(
+                    "Error cargando logs:",
+                    error
+                )
+
+            }
+        }
+
+        loadLogs()
+        setInterval(loadLogs, 1000)
+
+    </script>
+
+</body>
+
+</html>
