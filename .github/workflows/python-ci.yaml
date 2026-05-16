@@ -2,14 +2,8 @@ name: Test and Builds Python prueba tecnica
 
 on:
 
-  push:
-    branches: [ "dev" ]
-    paths:
-      - 'client/**'
-      - '.github/workflows/python-ci.yaml'
-
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "prod" ]
     paths:
       - 'client/**'
       - '.github/workflows/python-ci.yaml'
