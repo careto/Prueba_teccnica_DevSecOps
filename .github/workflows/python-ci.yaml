@@ -51,4 +51,4 @@ jobs:
         run: python -m py_compile main.py
 
       - name: Run  prueba funcional
-        run: pytest tests/test_cliente.py
+        run: pytest test_cliente.py
