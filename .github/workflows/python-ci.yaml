@@ -49,7 +49,7 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      - name: Validar la sintaxis de cliente.py pilas no revisa logica
+      - name: Validar la sintaxis de cliente.py pilas no revisa logica.
         run: python -m compileall src
 
       - name: Check linting
