@@ -25,6 +25,9 @@ jobs:
 
     environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
 
+    env:
+      TARGET_URL: ${{ vars.TARGET_URL }}
+
     defaults:
       run:
         working-directory: ping
@@ -52,29 +55,25 @@ jobs:
       - name: Validar la sintaxis de cliente.py pilas no revisa logica.
         run: python -m compileall src
 
-      - name: Check linting
-        working-directory: src
-        run: ruff check .
-      
-      - name: Usar secreto como env var
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
+      - name: Debug structure
+        run: ls -R
 
+      - name: Check linting
+        run: ruff check src
+      
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
-      
-      - name: Carga de secretos para deploy
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
+
+      - name: Run imprimir URL de destino
         run: |
-          echo "Usando API KEY $API_KEY"
+          echo "Usando TARGET URL $TARGET_URL"
           echo "Deploying to environment..."
 
-      - name: Deploy step (ejemplo)
+      - name: Verificar entorno de despliegue
         run: |
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
+          if [ "$GITHUB_REF_NAME" = "prod" ]; then
             echo "🚀 Deploy a PRODUCCIÓN"
-          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+          elif [ "$GITHUB_REF_NAME" = "dev" ]; then
             echo "🧪 Deploy a LAB"
           else
             echo "🛠 Deploy a DEV"
