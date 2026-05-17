@@ -14,7 +14,7 @@ terraform {
     organization = "jcardona"
 
     workspaces {
-      name = "pruebatecnicadvplata"
+      name = "prueba_tecnica_devsecops"
     }
   }
 }
