@@ -1,8 +1,10 @@
 from ping.src.cliente import enviar_healthcheck
 import time
 from datetime import datetime
+import os
 
-URL = "http://localhost/health"
+#URL = "http://localhost/health"
+URL = os.getenv('TARGET_URL')
 
 while True:
     try:
