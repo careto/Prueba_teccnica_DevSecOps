@@ -57,9 +57,9 @@ jobs:
 
       - name: Debug structure
         run: ls -R
-        
+
       - name: Check linting
-        run: ruff check .
+        run: ruff check src
         working-directory: src
       
       - name: Run  prueba funcional
