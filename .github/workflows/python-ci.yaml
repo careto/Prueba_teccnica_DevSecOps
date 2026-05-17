@@ -1,9 +1,16 @@
 name: Test and Builds Python prueba tecnica
 
 on:
+  push:
+    branches:
+      - feature/**
 
   pull_request:
-    branches: [ "prod" ]
+    branches:
+      - dev
+      - lab
+      - prod
+      - feature/**
     paths:
       - 'client/**'
       - '.github/workflows/python-ci.yaml'
@@ -12,10 +19,14 @@ permissions:
   contents: read
 
 jobs:
-
   test-and-build-python:
 
     runs-on: ubuntu-latest
+
+    environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
+
+    env:
+      TARGET_URL: ${{ vars.TARGET_URL }}
 
     defaults:
       run:
@@ -41,11 +52,28 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      - name: Validar la sintaxis de cliente.py pilas no revisa logica
+      - name: Validar la sintaxis de cliente.py pilas no revisa logica.
         run: python -m compileall src
+
+      - name: Debug structure
+        run: ls -R
 
       - name: Check linting
-        run: python -m compileall src
-
+        run: ruff check src
+      
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
+
+      - name: Run imprimir URL de destino
+        run: |
+          echo "Usando variable: $TARGET_URL"
+
+      - name: Verificar entorno de despliegue
+        run: |
+          if [ "$GITHUB_REF_NAME" = "prod" ]; then
+            echo "🚀 Deploy a PRODUCCIÓN"
+          elif [ "$GITHUB_REF_NAME" = "lab" ]; then
+            echo "🧪 Deploy a LAB"
+          else
+            echo "🛠 Deploy a DEV"
+          fi
