@@ -61,6 +61,7 @@ jobs:
       
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
+
       - name: Deploy step (ejemplo)
         run: |
           echo "Usando API KEY $API_KEY"
