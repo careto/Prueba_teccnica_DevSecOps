@@ -58,6 +58,9 @@ jobs:
       - name: Debug structure
         run: ls -R
 
+      - name: Echo GITHUB_REF_NAME
+        run: echo $GITHUB_REF_NAME
+
       - name: Check linting
         run: ruff check src
       
