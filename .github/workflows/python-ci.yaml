@@ -25,6 +25,9 @@ jobs:
 
     environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
 
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
+
     defaults:
       run:
         working-directory: ping
@@ -56,21 +59,14 @@ jobs:
         working-directory: src
         run: ruff check .
       
-      - name: Usar secreto como env var
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
-      
-      - name: Carga de secretos para deploy
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
+      - name: Deploy step (ejemplo)
         run: |
           echo "Usando API KEY $API_KEY"
           echo "Deploying to environment..."
 
-      - name: Deploy step (ejemplo)
+      - name: Deploy por rama
         run: |
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             echo "🚀 Deploy a PRODUCCIÓN"
