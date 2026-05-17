@@ -60,7 +60,6 @@ jobs:
 
       - name: Check linting
         run: ruff check src
-        working-directory: src
       
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
