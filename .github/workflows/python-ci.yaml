@@ -58,6 +58,9 @@ jobs:
       - name: Debug structure
         run: ls -R
 
+      - name: Echo GITHUB_REF_NAME
+        run: echo $GITHUB_REF_NAME
+
       - name: Check linting
         run: ruff check src
       
@@ -68,12 +71,16 @@ jobs:
         run: |
           echo "Usando variable: $TARGET_URL"
 
-      - name: Verificar entorno de despliegue
+      - name: Definir environment
+        id: env
         run: |
-          if [ "$GITHUB_REF_NAME" = "prod" ]; then
-            echo "🚀 Deploy a PRODUCCIÓN"
-          elif [ "$GITHUB_REF_NAME" = "lab" ]; then
-            echo "🧪 Deploy a LAB"
+          if [ "${{ github.base_ref }}" = "prod" ]; then
+            echo "env=prod" >> $GITHUB_OUTPUT
+          elif [ "${{ github.base_ref }}" = "lab" ]; then
+            echo "env=lab" >> $GITHUB_OUTPUT
           else
-            echo "🛠 Deploy a DEV"
+            echo "env=dev" >> $GITHUB_OUTPUT
           fi
+          
+      - name: Mostrar environment
+        run: echo "Environment ${{ steps.env.outputs.env }}"
