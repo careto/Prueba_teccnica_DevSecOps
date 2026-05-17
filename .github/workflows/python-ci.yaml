@@ -62,7 +62,7 @@ jobs:
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
 
-      - name: Deploy step (ejemplo)
+      - name: Deploy step 
         run: |
           echo "Usando TARGET URL $TARGET_URL"
           echo "Deploying to environment..."
