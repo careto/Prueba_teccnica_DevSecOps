@@ -65,6 +65,11 @@ jobs:
       
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
+        
+      - name: Run coverage
+        run: |
+          coverage run -m pytest
+          coverage report --fail-under=80
 
       - name: Run imprimir URL de destino
         run: |
