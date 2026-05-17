@@ -16,6 +16,7 @@ on:
       - '.github/workflows/python-ci.yaml'
 
 permissions:
+  security-events: write
   contents: read
 
 jobs:
@@ -36,6 +37,17 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Run analysis
+        uses: github/codeql-action/analyze@v3
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -58,9 +70,6 @@ jobs:
       - name: Debug structure
         run: ls -R
 
-      - name: Echo GITHUB_REF_NAME
-        run: echo $GITHUB_REF_NAME
-
       - name: Check linting
         run: ruff check src
       
@@ -81,6 +90,6 @@ jobs:
           else
             echo "env=dev" >> $GITHUB_OUTPUT
           fi
-          
+
       - name: Mostrar environment
         run: echo "Environment ${{ steps.env.outputs.env }}"
