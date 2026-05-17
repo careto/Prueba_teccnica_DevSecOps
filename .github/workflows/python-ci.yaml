@@ -81,6 +81,6 @@ jobs:
           else
             echo "env=dev" >> $GITHUB_OUTPUT
           fi
-
+          
       - name: Mostrar environment
-        run: echo "Environment: ${{ steps.env.outputs.env }}"
+        run: echo "Environment ${{ steps.env.outputs.env }}"
