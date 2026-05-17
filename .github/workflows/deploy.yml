@@ -10,13 +10,15 @@ on:
       - dev
       - lab
       - prod
-      - feature/**
+
     paths:
       - 'client/**'
       - '.github/workflows/python-ci.yaml'
 
 permissions:
+  actions: read
   contents: read
+  security-events: write
 
 jobs:
   test-and-build-python:
@@ -58,9 +60,6 @@ jobs:
       - name: Debug structure
         run: ls -R
 
-      - name: Echo GITHUB_REF_NAME
-        run: echo $GITHUB_REF_NAME
-
       - name: Check linting
         run: ruff check src
       
@@ -81,6 +80,6 @@ jobs:
           else
             echo "env=dev" >> $GITHUB_OUTPUT
           fi
-          
+
       - name: Mostrar environment
         run: echo "Environment ${{ steps.env.outputs.env }}"
