@@ -44,5 +44,8 @@ jobs:
       - name: Validar la sintaxis de cliente.py pilas no revisa logica
         run: python -m compileall src
 
+      - name: Check linting
+        run: python -m compileall src
+
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
