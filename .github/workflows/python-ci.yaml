@@ -56,7 +56,6 @@ jobs:
         run: python -m compileall src
 
       - name: Check linting
-        working-directory: src
         run: ruff check .
       
       - name: Run  prueba funcional
