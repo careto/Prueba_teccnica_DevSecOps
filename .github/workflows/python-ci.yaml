@@ -55,6 +55,9 @@ jobs:
       - name: Validar la sintaxis de cliente.py pilas no revisa logica.
         run: python -m compileall src
 
+      - name: Debug structure
+        run: ls -R
+        
       - name: Check linting
         run: ruff check .
         working-directory: src
