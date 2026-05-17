@@ -16,8 +16,9 @@ on:
       - '.github/workflows/python-ci.yaml'
 
 permissions:
-  security-events: write
+  actions: read
   contents: read
+  security-events: write
 
 jobs:
   test-and-build-python:
