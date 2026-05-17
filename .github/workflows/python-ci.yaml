@@ -1,0 +1,48 @@
+name: Test and Builds Python prueba tecnica
+
+on:
+
+  pull_request:
+    branches: [ "prod" ]
+    paths:
+      - 'client/**'
+      - '.github/workflows/python-ci.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+
+  test-and-build-python:
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ping
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Validar la sintaxis de cliente.py pilas no revisa logica
+        run: python -m compileall src
+
+      - name: Run  prueba funcional
+        run: PYTHONPATH=src pytest -v
