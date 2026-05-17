@@ -1,9 +1,16 @@
 name: Test and Builds Python prueba tecnica
 
 on:
+  push:
+    branches:
+      - feature/**
 
   pull_request:
-    branches: [ "prod" ]
+    branches:
+      - dev
+      - lab
+      - prod
+      - feature/**
     paths:
       - 'client/**'
       - '.github/workflows/python-ci.yaml'
@@ -12,10 +19,11 @@ permissions:
   contents: read
 
 jobs:
-
   test-and-build-python:
 
     runs-on: ubuntu-latest
+
+    environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
 
     defaults:
       run:
@@ -45,7 +53,29 @@ jobs:
         run: python -m compileall src
 
       - name: Check linting
-        run: python -m compileall src
+        working-directory: src
+        run: ruff check .
+      
+      - name: Usar secreto como env var
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
 
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
+      
+      - name: Carga de secretos para deploy
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          echo "Usando API KEY $API_KEY"
+          echo "Deploying to environment..."
+
+      - name: Deploy step (ejemplo)
+        run: |
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "🚀 Deploy a PRODUCCIÓN"
+          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+            echo "🧪 Deploy a LAB"
+          else
+            echo "🛠 Deploy a DEV"
+          fi
