@@ -26,7 +26,7 @@ jobs:
     environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
 
     env:
-      TARGET_URL: ${{ secrets.TARGET_URL }}
+      TARGET_URL: ${{ vars.TARGET_URL }}
 
     defaults:
       run:
