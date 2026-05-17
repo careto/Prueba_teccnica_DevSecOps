@@ -64,16 +64,16 @@ jobs:
       - name: Run  prueba funcional
         run: PYTHONPATH=src pytest -v
 
-      - name: Deploy step 
+      - name: Run imprimir URL de destino
         run: |
           echo "Usando TARGET URL $TARGET_URL"
           echo "Deploying to environment..."
 
-      - name: Deploy por rama
+      - name: Verificar entorno de despliegue
         run: |
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
+          if [ "$GITHUB_REF_NAME" = "prod" ]; then
             echo "🚀 Deploy a PRODUCCIÓN"
-          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+          elif [ "$GITHUB_REF_NAME" = "dev" ]; then
             echo "🧪 Deploy a LAB"
           else
             echo "🛠 Deploy a DEV"
