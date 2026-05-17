@@ -26,7 +26,7 @@ jobs:
     environment: ${{ github.ref_name == 'prod' && 'prod' || github.ref_name == 'lab' && 'lab' || 'dev' }}
 
     env:
-      API_KEY: ${{ secrets.API_KEY }}
+      TARGET_URL: ${{ secrets.TARGET_URL }}
 
     defaults:
       run:
@@ -64,7 +64,7 @@ jobs:
 
       - name: Deploy step (ejemplo)
         run: |
-          echo "Usando API KEY $API_KEY"
+          echo "Usando TARGET URL $TARGET_URL"
           echo "Deploying to environment..."
 
       - name: Deploy por rama
