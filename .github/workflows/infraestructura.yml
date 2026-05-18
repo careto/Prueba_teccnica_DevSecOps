@@ -1,4 +1,9 @@
 name: Aprovisionamiento de la Infraestructura
+
+concurrency:
+  group: terraform-dev
+  cancel-in-progress: false
+  
 on:
   push:
     branches:
