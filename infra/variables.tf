@@ -1,7 +1,5 @@
 variable "aws_region" {
-  description = "region aws"
-  type        = string
-  default     = "us-east-1"
+  default = "us-east-1"
 }
 
 variable "app_name" {

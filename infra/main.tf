@@ -156,6 +156,45 @@ resource "aws_ecs_cluster" "main" {
 }
 
 ############################################
+# IAM ROLE ECS TASK EXECUTION
+############################################
+
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "${var.app_name}-ecsTaskExecutionRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
+  role = aws_iam_role.ecs_task_execution_role.name
+
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+############################################
+# CLOUDWATCH LOGS
+############################################
+
+resource "aws_cloudwatch_log_group" "ecs" {
+  name              = "/ecs/${var.app_name}"
+  retention_in_days = 7
+}
+
+############################################
 # APPLICATION LOAD BALANCER
 ############################################
 
@@ -219,23 +258,62 @@ resource "aws_lb_listener" "http" {
 }
 
 ############################################
-# ECS SERVICE
+# ECS TASK DEFINITION
 ############################################
-# IMPORTANTE:
-# No se crea Task Definition.
-# El service queda listo para que
-# luego despliegues tu task.
+
+resource "aws_ecs_task_definition" "app" {
+  family = var.app_name
+
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+
+  cpu    = 256
+  memory = 512
+
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = jsonencode([
+    {
+      name  = var.app_name
+
+      image = "${aws_ecr_repository.app.repository_url}:latest"
+
+      essential = true
+
+      portMappings = [
+        {
+          containerPort = var.container_port
+          hostPort      = var.container_port
+          protocol      = "tcp"
+        }
+      ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.ecs.name
+          awslogs-region        = var.aws_region
+          awslogs-stream-prefix = "ecs"
+        }
+      }
+    }
+  ])
+}
+
+############################################
+# ECS SERVICE
 ############################################
 
 resource "aws_ecs_service" "app" {
-  name    = "${var.app_name}-service"
-  cluster = aws_ecs_cluster.main.id
+  name = "${var.app_name}-service"
 
-  desired_count = 0
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.app.arn
+
+  desired_count = 1
 
   launch_type = "FARGATE"
-
-  scheduling_strategy = "REPLICA"
 
   network_configuration {
     subnets = [
@@ -250,14 +328,20 @@ resource "aws_ecs_service" "app" {
     assign_public_ip = true
   }
 
-  lifecycle {
-    ignore_changes = [
-      task_definition,
-      desired_count
-    ]
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+
+    container_name = var.app_name
+    container_port = var.container_port
   }
 
   depends_on = [
     aws_lb_listener.http
   ]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition
+    ]
+  }
 }
