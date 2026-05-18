@@ -16,11 +16,11 @@ jobs:
     environment: dev
 
     env:
-      AWS_REGION: ${{ vars.MY_AWS_REGION }}
-      ECR_REPOSITORY: ${{ vars.MY_ECR_REPOSITORY }}
-      ECS_SERVICE: ${{ vars.MY_ECS_SERVICE }}
-      ECS_CLUSTER: ${{ vars.MY_ECS_CLUSTER }}
-      CONTAINER_NAME: ${{ vars.MY_CONTAINER_NAME }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+      ECS_SERVICE: ${{ vars.ECS_SERVICE }}
+      ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+      CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
 
     defaults:
       run:
