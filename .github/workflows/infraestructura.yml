@@ -26,6 +26,8 @@ jobs:
     - name: Configure Terraform CLI Token
       run: echo "credentials \"app.terraform.io\" { token = \"${{ secrets.TF_API_TOKEN }}\" }" > ~/.terraformrc
 
+    - run: terraform force-unlock -force 52e8c8be-d1e9-84e1-5557-ce51b74295c3
+    
     - name: Terraform init
       run: terraform init -input=false 
       working-directory: ./infra
