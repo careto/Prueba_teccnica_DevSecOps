@@ -24,7 +24,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ping/src
+        working-directory: ping
 
     steps:
       #################################################
@@ -74,7 +74,7 @@ jobs:
       #################################################
 
       - name: Download task definition
-        working-directory: .
+        working-directory: src
         run: |
           aws ecs describe-task-definition \
             --task-definition prueba-tecnica \
