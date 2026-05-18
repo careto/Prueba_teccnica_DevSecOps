@@ -4,7 +4,7 @@ on:
     branches:
       - feature/infra
     paths:
-      - 'infra/**'  # Solo se ejecuta cuando hay cambios en la carpeta infra/
+      - 'infra/**'  # Solo se ejecuta cuando hay cambios en la carpeta infra.../
 env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
