@@ -58,6 +58,7 @@ jobs:
       #################################################
 
       - name: Build, tag, and push image to Amazon ECR
+        working-directory: src
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -74,7 +75,7 @@ jobs:
       #################################################
 
       - name: Download task definition
-        working-directory: src
+        working-directory: .
         run: |
           aws ecs describe-task-definition \
             --task-definition prueba-tecnica \
