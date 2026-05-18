@@ -2,7 +2,7 @@ name: Aprovisionamiento de la Infraestructura
 on:
   push:
     branches:
-      - dev
+      - feature/infra
     paths:
       - 'infra/**'  # Solo se ejecuta cuando hay cambios en la carpeta infra/
 env:
