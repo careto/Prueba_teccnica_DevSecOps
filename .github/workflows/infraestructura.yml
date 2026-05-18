@@ -1,9 +1,5 @@
 name: Aprovisionamiento de la Infraestructura
 
-concurrency:
-  group: terraform-dev
-  cancel-in-progress: false
-
 on:
   push:
     branches:
@@ -34,9 +30,6 @@ jobs:
     - name: Terraform init
       run: terraform init -input=false 
       working-directory: ./infra
-
-    #- run: terraform force-unlock -force 52e8c8be-d1e9-84e1-5557-ce51b74295c3
-
 
     - name: Terraform validate
       run: terraform validate
