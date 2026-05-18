@@ -1,9 +1,11 @@
 name: Aprovisionamiento de la Infraestructura
 
+# Como ya desplegue al infra mejor comento esta accion.
 on:
-  push:
-    branches:
-      - feature/**
+  workflow_dispatch:
+  #push:
+    #branches:
+      #- feature/**
     #paths:
     #  - 'infra/**'  # Solo se ejecuta cuando hay cambios en la carpeta infra.../
 env:
