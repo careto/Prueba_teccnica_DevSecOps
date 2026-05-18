@@ -1,4 +1,4 @@
-from ping.src.cliente import enviar_healthcheck
+from src.cliente import enviar_healthcheck
 import time
 from datetime import datetime
 import os
